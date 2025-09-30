@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'ru.sarkolsss'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    asmVersion = "9.8"
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation "org.ow2.asm:asm:${asmVersion}"
+    implementation "org.ow2.asm:asm-tree:${asmVersion}"
+    implementation "org.ow2.asm:asm-commons:${asmVersion}"
+    implementation "org.ow2.asm:asm-util:${asmVersion}"
+    implementation "org.ow2.asm:asm-analysis:${asmVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    manifest {
+        attributes(
+                'Main-Class': 'ru.sarkolsss.Main',
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
